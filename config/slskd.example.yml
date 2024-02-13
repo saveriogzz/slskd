@@ -225,3 +225,10 @@
 #     notify_on_room_mention: true
 #     retry_attempts: 3
 #     cooldown_time: 900000
+#   minio:
+#     enabled: false
+#     endpoint: ~
+#     access_key: ~
+#     secret_key: ~
+#     secure: true
+#     bucket: ~

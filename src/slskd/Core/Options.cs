@@ -2132,6 +2132,14 @@ namespace slskd
                 public string SecretKey { get; init; }
 
                 /// <summary>
+                ///   Gets if Minio is using SSL.
+                /// </summary>
+                [Argument(default, "minio-use-ssl")]
+                [EnvironmentVariable("MINIO_USE_SSL")]
+                [Description("MinIO use ssl")]
+                public bool UseSSL { get; init; } = true;
+
+                /// <summary>
                 ///     Extended validation.
                 /// </summary>
                 /// <param name="validationContext"></param>

@@ -25,6 +25,6 @@ namespace slskd.Integrations.MinIO
         ///     Creates an instance of <see cref="MinioClient"/>.
         /// </summary>
         /// <returns>The created instance.</returns>
-        public MinioClient CreateMinIOClient();
+        public IMinioClient CreateMinIOClient();
     }
 }

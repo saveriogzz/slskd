@@ -43,9 +43,13 @@ namespace slskd.Integrations.MinIO
         ///     Creates an instance of <see cref="MinioClient"/>.
         /// </summary>
         /// <returns>The created instance.</returns>
-        public MinioClient CreateMinIOClient()
+        public IMinioClient CreateMinIOClient()
         {
-            var client = new MinioClient();
+            var client = new MinioClient()
+                         .WithEndpoint(MinioOptions.Endpoint)
+                         .WithCredentials(MinioOptions.AccessKey, MinioOptions.SecretKey)
+                         .WithSSL(MinioOptions.UseSSL)
+                         .Build();
 
             return client;
         }
