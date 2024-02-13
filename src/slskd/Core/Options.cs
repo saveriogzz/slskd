@@ -1882,7 +1882,8 @@ namespace slskd
             /// <summary>
             ///    Gets MinIO options.
             /// </summary>
-            public MinIOOptions Minio { get; init; } = new MinioOptions();
+            [Validate]
+            public MinioOptions Minio { get; init; } = new MinioOptions();
 
             /// <summary>
             ///     FTP options.
@@ -2098,7 +2099,7 @@ namespace slskd
                 /// <summary>
                 ///    Gets the MinIO endpoint.
                 /// </summary>
-                [Argument(default, "play.min.io")]
+                [Argument(default, "minio-endpoint")]
                 [EnvironmentVariable("MINIO_ENDPOINT")]
                 [Description("MinIO endpoint")]
                 public string Endpoint { get; init; }
@@ -2106,15 +2107,16 @@ namespace slskd
                 /// <summary>
                 ///    Gets the MinIO port.
                 /// </summary>
-                [Argument(default, "9000")]
+                [Argument(default, "minio-port")]
                 [EnvironmentVariable("MINIO_PORT")]
                 [Description("MinIO port")]
                 [Range(1024, 49151)]
+                public int Port { get; init; } = 9000;
 
                 /// <summary>
                 ///    Gets the MinIO access key.
                 /// </summary>
-                [Argument(default, "minioadmin")]
+                [Argument(default, "minio-access-key")]
                 [EnvironmentVariable("MINIO_ACCESS_KEY")]
                 [Description("MinIO access key")]
                 [Secret]
@@ -2123,12 +2125,28 @@ namespace slskd
                 /// <summary>
                 ///    Gets the MinIO secret key.
                 /// </summary>
-                [Argument(default, "minioadmin")]
+                [Argument(default, "minio-secret-key")]
                 [EnvironmentVariable("MINIO_SECRET_KEY")]
                 [Description("MinIO secret key")]
                 [Secret]
                 public string SecretKey { get; init; }
 
+                /// <summary>
+                ///     Extended validation.
+                /// </summary>
+                /// <param name="validationContext"></param>
+                /// <returns></returns>
+                public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+                {
+                    var results = new List<ValidationResult>();
+
+                    if (Enabled && string.IsNullOrWhiteSpace(Endpoint))
+                    {
+                        results.Add(new ValidationResult($"The Enabled field is true, but no Endpoint has been specified."));
+                    }
+
+                    return results;
+                }
             }
         }
     }

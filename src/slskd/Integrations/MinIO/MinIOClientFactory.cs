@@ -1,4 +1,4 @@
-// <copyright file="IMinIOClientFactory.cs" company="slskd Team">
+// <copyright file="MinIOClientFactory.cs" company="slskd Team">
 //     Copyright (c) slskd Team. All rights reserved.
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -15,16 +15,39 @@
 //     along with this program.  If not, see https://www.gnu.org/licenses/.
 // </copyright>
 
+using Microsoft.Extensions.Options;
+
 namespace slskd.Integrations.MinIO
 {
     using Minio;
+    using static slskd.Options.IntegrationOptions;
 
-    public interface IMinIOClientFactory
+    /// <summary>
+    ///    MinIO client factory.
+    /// </summary>
+    public class MinIOClientFactory : IMinIOClientFactory
     {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MinIOClientFactory"/> class.
+        /// </summary>
+        /// <param name="optionsMonitor">The options monitor used to derive application options.</param>
+        public MinIOClientFactory(IOptionsMonitor<Options> optionsMonitor)
+        {
+            OptionsMonitor = optionsMonitor;
+        }
+
+        private MinioOptions MinioOptions => OptionsMonitor.CurrentValue.Integration.Minio;
+        private IOptionsMonitor<Options> OptionsMonitor { get; set; }
+
         /// <summary>
         ///     Creates an instance of <see cref="MinioClient"/>.
         /// </summary>
         /// <returns>The created instance.</returns>
-        public MinioClient CreateMinIOClient();
+        public MinioClient CreateMinIOClient()
+        {
+            var client = new MinioClient();
+
+            return client;
+        }
     }
 }
