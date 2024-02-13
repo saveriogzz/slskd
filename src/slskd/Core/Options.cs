@@ -1880,6 +1880,11 @@ namespace slskd
             public PushbulletOptions Pushbullet { get; init; } = new PushbulletOptions();
 
             /// <summary>
+            ///    Gets MinIO options.
+            /// </summary>
+            public MinIOOptions Minio { get; init; } = new MinioOptions();
+
+            /// <summary>
             ///     FTP options.
             /// </summary>
             public class FtpOptions : IValidatableObject
@@ -2075,6 +2080,55 @@ namespace slskd
 
                     return results;
                 }
+            }
+
+            /// <summary>
+            ///    MinIO Options.
+            /// </summary>
+            public class MinioOptions : IValidatableObject
+            {
+                /// <summary>
+                ///    Gets a value indicating whether the MinIO integration is enabled.
+                /// </summary>
+                [Argument(default, "minio")]
+                [EnvironmentVariable("MINIO")]
+                [Description("enable MinIO integration")]
+                public bool Enabled { get; init; }
+
+                /// <summary>
+                ///    Gets the MinIO endpoint.
+                /// </summary>
+                [Argument(default, "play.min.io")]
+                [EnvironmentVariable("MINIO_ENDPOINT")]
+                [Description("MinIO endpoint")]
+                public string Endpoint { get; init; }
+
+                /// <summary>
+                ///    Gets the MinIO port.
+                /// </summary>
+                [Argument(default, "9000")]
+                [EnvironmentVariable("MINIO_PORT")]
+                [Description("MinIO port")]
+                [Range(1024, 49151)]
+
+                /// <summary>
+                ///    Gets the MinIO access key.
+                /// </summary>
+                [Argument(default, "minioadmin")]
+                [EnvironmentVariable("MINIO_ACCESS_KEY")]
+                [Description("MinIO access key")]
+                [Secret]
+                public string AccessKey { get; init; }
+
+                /// <summary>
+                ///    Gets the MinIO secret key.
+                /// </summary>
+                [Argument(default, "minioadmin")]
+                [EnvironmentVariable("MINIO_SECRET_KEY")]
+                [Description("MinIO secret key")]
+                [Secret]
+                public string SecretKey { get; init; }
+
             }
         }
     }
